@@ -25,4 +25,9 @@ public class PlateauBaseObject {
     public void setType(PlateauEnum type) {
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return this.type.toString() + " " + this.position.toString();
+    }
 }

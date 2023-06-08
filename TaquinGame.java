@@ -25,12 +25,17 @@ public class TaquinGame {
             }
         }
 
-        System.out.println(listPosition);
         // Generate the positions of the agents
         for (int i = 0; i < listPosition.size(); i += 2) {
             AgentTaquin newAgent = new AgentTaquin(listPosition.get(i), listPosition.get(i + 1));
+            if (!Plateau.listeAgents.contains(newAgent)) {
+                Plateau.listeAgents.add(newAgent);
+            }
             listAgent.add(newAgent);
         }
+
+        System.out.println(listAgent);
+        Plateau.listeAgents.forEach(agent -> System.out.println(agent.getDestination()));
     }
 
     public boolean validateSolution() {
