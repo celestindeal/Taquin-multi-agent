@@ -1,9 +1,11 @@
 import Plateau.*;
+import Renderer.PlateauRenderer;
 
 import java.util.ArrayList;
 
 public class TaquinGame {
     private ArrayList<AgentTaquin> listAgent = new ArrayList<AgentTaquin>();
+
 
     public void generatePlateau() {
         Plateau.plateau = new PlateauBaseObject[Plateau.TAILLE][Plateau.TAILLE];
