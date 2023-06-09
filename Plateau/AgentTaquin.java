@@ -13,6 +13,11 @@ public class AgentTaquin extends PlateauBaseObject {
         this.destination = new DestinationTaquin(destination, this);
     }
 
+    public void deplacer(DirectionEnum directionEnum) {
+        Position newPosition = Position.enumToPosition(this.getPosition(), directionEnum);
+        this.setPosition(newPosition);
+    }
+
     public DestinationTaquin getDestination() {
         return this.destination;
     }

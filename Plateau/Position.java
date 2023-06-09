@@ -27,6 +27,26 @@ public class Position {
         return "(" + this.x + ", " + this.y + ")";
     }
 
+    public static Position enumToPosition(Position position, DirectionEnum direction) {
+        switch (direction) {
+            case HAUT -> {
+                return new Position(position.getX(), position.getY() - 1);
+            }
+            case BAS -> {
+                return new Position(position.getX(), position.getY() + 1);
+            }
+            case GAUCHE -> {
+                return new Position(position.getX() - 1, position.getY());
+            }
+            case DROITE -> {
+                return new Position(position.getX() + 1, position.getY());
+            }
+            default -> {
+                return null;
+            }
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == this) return true;
