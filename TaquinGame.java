@@ -22,7 +22,6 @@ public class TaquinGame {
             if (!Plateau.listeAgents.contains(newAgent)) {
                 Plateau.listeAgents.add(newAgent);
             }
-            Plateau.listeAgents.add(newAgent);
         }
     }
 }
