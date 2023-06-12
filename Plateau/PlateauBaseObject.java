@@ -5,11 +5,13 @@ public class PlateauBaseObject {
     private PlateauEnum type;
 
     PlateauBaseObject(Position position, PlateauEnum type) {
-        Plateau.listeAgents.forEach(agent -> {
-            if (agent.getPosition().equals(position)) {
-                throw new IllegalArgumentException("Position already taken by another agent");
-            }
-        });
+        if (type == PlateauEnum.AGENT) {
+            Plateau.listeAgents.forEach(agent -> {
+                if (agent.getPosition().equals(position)) {
+                    throw new IllegalArgumentException("Position already taken by another agent");
+                }
+            });
+        }
         this.position = position;
         this.type = type;
     }

@@ -1,7 +1,6 @@
 package Plateau;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Plateau {
@@ -12,7 +11,7 @@ public class Plateau {
     final public static int AGENT = 1;
     final public static int DESTINATION = 2;
     final public static int AGENT_DESTINATION = 3;
-    final public static int AGENT_SLEEP_MOVE_TIME = 1000;
+    final public static int AGENT_SLEEP_MOVE_TIME = 400;
     final public static int AGENT_SLEEP_TIME = 200;
 
     public static int[][][] getPlateauMatrix() {

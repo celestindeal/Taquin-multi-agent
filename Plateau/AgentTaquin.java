@@ -6,6 +6,7 @@ import Game.Main;
 import Solver.TaquinSolver;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class AgentTaquin extends PlateauBaseObject implements Runnable {
     private DestinationTaquin destination;
@@ -24,7 +25,7 @@ public class AgentTaquin extends PlateauBaseObject implements Runnable {
         this.name = hashCode() + "";
     }
 
-    public String setName(){
+    public String setName() {
         return name;
     }
 
@@ -45,7 +46,6 @@ public class AgentTaquin extends PlateauBaseObject implements Runnable {
 
     private DirectionEnum getPossibleDirectionFromPosition(DirectionEnum directionFromTaquinAsker) {
         ArrayList<DirectionEnum> possibleDirections = new ArrayList<DirectionEnum>();
-        // move left or right
         if (this.getPosition().getX() > 0 && Plateau.getAgentAtPosition(new Position(this.getPosition().getX() - 1, this.getPosition().getY())) == null) {
             possibleDirections.add(DirectionEnum.GAUCHE);
         } else if (this.getPosition().getX() < Plateau.TAILLE - 1 && Plateau.getAgentAtPosition(new Position(this.getPosition().getX() + 1, this.getPosition().getY())) == null) {
@@ -68,22 +68,24 @@ public class AgentTaquin extends PlateauBaseObject implements Runnable {
         boolean isAgentOnDestination = false;
         while (true) {
             // Check if the agent needs to move
-            if (!Plateau.isBoardValid()) {
-                System.out.println(this.letterbox.hasOrder());
-            }
             if (this.letterbox.hasOrder()) {
                 DirectionEnum direction = this.getPossibleDirectionFromPosition(this.letterbox.getOrder().getDirection());
                 if (direction != null) {
-                    this.deplacer(direction);
-                    System.out.println("Agent " + this.name + " has moved to " + this.getPosition());
-                    isAgentOnDestination = false;
-                    try {
-                        Thread.sleep(Plateau.AGENT_SLEEP_MOVE_TIME);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                    if (this.deplacer(direction)) {
+                        System.out.println("Agent " + this.name + " has moved to " + this.getPosition());
+                        isAgentOnDestination = false;
+                        try {
+                            long randomSleepTimeMultiplier = (long) (1 + Math.random() * 2);
+                            Thread.sleep((Plateau.AGENT_SLEEP_MOVE_TIME * randomSleepTimeMultiplier));
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        System.out.println("Agent " + this.name + " has moved to " + this.getPosition());
+                    } else {
+                        Objects.requireNonNull(Plateau.getAgentAtPosition(this.getPosition())).letterbox.setOrder(new MoveAgentOrder(this, this.letterbox.getOrder().getDirection()));
                     }
-                    System.out.println("Agent " + this.name + " has moved to " + this.getPosition());
                 } else {
+                    Objects.requireNonNull(Plateau.getAgentAtPosition(this.getPosition())).letterbox.setOrder(new MoveAgentOrder(this, this.letterbox.getOrder().getDirection()));
                     System.out.println("Agent " + this.name + " can't move");
                 }
                 this.letterbox.setOrder(null);
@@ -96,6 +98,7 @@ public class AgentTaquin extends PlateauBaseObject implements Runnable {
                 if (Plateau.isBoardValid()) {
                     System.out.println("Board is valid");
                     Main.plateauRenderer.updatePanelColors();
+                    return;
                 }
             }
 
@@ -106,8 +109,7 @@ public class AgentTaquin extends PlateauBaseObject implements Runnable {
                     if (this.deplacer(directionEnum)) {
                         System.out.println("Agent " + this.name + " has moved to " + this.getPosition());
                         try {
-                            long randomSleepTimeMultiplier = (long) (1 + Math.random() * 2);
-                            Thread.sleep((long) (Plateau.AGENT_SLEEP_TIME * randomSleepTimeMultiplier));
+                            Thread.sleep(Plateau.AGENT_SLEEP_TIME);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
