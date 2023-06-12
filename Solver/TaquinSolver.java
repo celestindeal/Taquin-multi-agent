@@ -27,32 +27,54 @@ public class TaquinSolver {
         return costs;
     }
 
-    public static ArrayList<DirectionEnum> getDirectionsToDestination(AgentTaquin agent) {
+    public static ArrayList<DirectionEnum> getDirectionsToDestination(AgentTaquin agent, boolean random) {
         int x = agent.getPosition().getX();
         int y = agent.getPosition().getY();
         int xDestination = agent.getDestination().getPosition().getX();
         int yDestination = agent.getDestination().getPosition().getY();
         ArrayList<DirectionEnum> directions = new ArrayList<>();
-        while (x != xDestination || y != yDestination) {
-            if (x < xDestination) {
-                directions.add(DirectionEnum.DROITE);
-                x++;
-                continue;
+        if (random) {
+            while (x != xDestination || y != yDestination) {
+                if (x < xDestination) {
+                    directions.add(DirectionEnum.DROITE);
+                    x++;
+                    continue;
+                }
+                if (x > xDestination) {
+                    directions.add(DirectionEnum.GAUCHE);
+                    x--;
+                    continue;
+                }
+                if (y < yDestination) {
+                    directions.add(DirectionEnum.BAS);
+                    y++;
+                    continue;
+                }
+                directions.add(DirectionEnum.HAUT);
+                y--;
             }
-            if (x > xDestination) {
-                directions.add(DirectionEnum.GAUCHE);
-                x--;
-                continue;
-            }
-            if (y < yDestination) {
+        } else {
+            while (x != xDestination || y != yDestination) {
+                if (x > xDestination) {
+                    directions.add(DirectionEnum.GAUCHE);
+                    x--;
+                    continue;
+                }
+                if (x < xDestination) {
+                    directions.add(DirectionEnum.DROITE);
+                    x++;
+                    continue;
+                }
+
+                if (y > yDestination) {
+                    directions.add(DirectionEnum.HAUT);
+                    y--;
+                    continue;
+                }
                 directions.add(DirectionEnum.BAS);
                 y++;
-                continue;
             }
-            directions.add(DirectionEnum.HAUT);
-            y--;
         }
         return directions;
     }
-
 }

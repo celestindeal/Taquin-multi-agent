@@ -68,6 +68,9 @@ public class AgentTaquin extends PlateauBaseObject implements Runnable {
         boolean isAgentOnDestination = false;
         while (true) {
             // Check if the agent needs to move
+            if (!Plateau.isBoardValid()) {
+                System.out.println(this.letterbox.hasOrder());
+            }
             if (this.letterbox.hasOrder()) {
                 DirectionEnum direction = this.getPossibleDirectionFromPosition(this.letterbox.getOrder().getDirection());
                 if (direction != null) {
@@ -98,14 +101,13 @@ public class AgentTaquin extends PlateauBaseObject implements Runnable {
 
             // Move the agent to the destination
             while (!this.getPosition().equals(this.getDestination().getPosition())) {
-                System.out.println(this.letterbox.getOrder());
-                ArrayList<DirectionEnum> direction = TaquinSolver.getDirectionsToDestination(this);
-                System.out.println(direction);
+                ArrayList<DirectionEnum> direction = TaquinSolver.getDirectionsToDestination(this, Math.random() > 0.5);
                 for (DirectionEnum directionEnum : direction) {
                     if (this.deplacer(directionEnum)) {
                         System.out.println("Agent " + this.name + " has moved to " + this.getPosition());
                         try {
-                            Thread.sleep(Plateau.AGENT_SLEEP_TIME);
+                            long randomSleepTimeMultiplier = (long) (1 + Math.random() * 2);
+                            Thread.sleep((long) (Plateau.AGENT_SLEEP_TIME * randomSleepTimeMultiplier));
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
