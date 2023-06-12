@@ -5,7 +5,6 @@ import Communication.MoveAgentOrder;
 import Game.Main;
 import Solver.TaquinSolver;
 
-import javax.swing.*;
 import java.util.ArrayList;
 
 public class AgentTaquin extends PlateauBaseObject implements Runnable {
@@ -23,6 +22,10 @@ public class AgentTaquin extends PlateauBaseObject implements Runnable {
         super(position, PlateauEnum.AGENT);
         this.destination = new DestinationTaquin(destination, this);
         this.name = hashCode() + "";
+    }
+
+    public String setName(){
+        return name;
     }
 
     public boolean deplacer(DirectionEnum directionEnum) {

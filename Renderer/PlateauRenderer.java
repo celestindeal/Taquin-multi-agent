@@ -11,7 +11,7 @@ import static Plateau.PlateauEnum.VIDE;
 public class PlateauRenderer extends JFrame {
     private static  ArrayList<RoundColorPanel> roundColorPanels = new ArrayList<>();
     public static void renderPlateauConsole() {
-        int[][] plateauMatrix = Plateau.getPlateauMatrix();
+        int[][][] plateauMatrix = Plateau.getPlateauMatrix();
         System.out.print("╔");
         for (int i = 0; i < Plateau.TAILLE; i++) {
             System.out.print("═══");
@@ -20,7 +20,7 @@ public class PlateauRenderer extends JFrame {
         for (int i = 0; i < Plateau.TAILLE; i++) {
             System.out.print("║");
             for (int j = 0; j < Plateau.TAILLE; j++) {
-                switch (plateauMatrix[j][i]) {
+                switch (plateauMatrix[j][i][0]) {
                     case Plateau.VIDE -> System.out.print(" - ");
                     case Plateau.AGENT -> System.out.print(" A ");
                     case Plateau.DESTINATION -> System.out.print(" D ");
@@ -36,31 +36,31 @@ public class PlateauRenderer extends JFrame {
         System.out.println("╝");
     }
 
-    public void swing1() {
+//    Création de la page d'affichage
+    public void buildPanelColors() {
 
         int Taille_Case = 100;
         int tailleTableau = Plateau.TAILLE;
-        int[][] plateauMatrix = Plateau.getPlateauMatrix();
-
+        int[][][] plateauMatrix = Plateau.getPlateauMatrix();
+// demander la page et mettre une grille à l'interieur
         setLayout(new GridLayout(tailleTableau, tailleTableau)); // Utilisation de GridLayout
 
         for (int j = 0; j < tailleTableau; j++) {
             for (int i = 0; i < tailleTableau; i++) {
-                // Code existant pour déterminer la couleur du panneau
                 Color couleur;
                 Color couleurBordu;
-                switch (plateauMatrix[i][j]) {
+                switch (plateauMatrix[i][j][0]) {
                     case Plateau.VIDE:
                         couleur = Color.WHITE;
                         couleurBordu = Color.WHITE;
                         break;
                     case Plateau.AGENT:
-                        couleur = Color.RED;
+                        couleur = getColorFromHashCode(plateauMatrix[i][j][1]);
                         couleurBordu = Color.WHITE;
                         break;
                     case Plateau.DESTINATION:
                         couleur = Color.WHITE;
-                        couleurBordu = Color.GREEN;
+                        couleurBordu = getColorFromHashCode(plateauMatrix[i][j][1]);
                         break;
                     default:
                         couleur = Color.BLACK;
@@ -81,7 +81,7 @@ public class PlateauRenderer extends JFrame {
 
     public void updatePanelColors() {
         int tailleTableau = Plateau.TAILLE;
-        int[][] plateauMatrix = Plateau.getPlateauMatrix();
+        int[][][] plateauMatrix = Plateau.getPlateauMatrix();
 
         for (int j = 0; j < tailleTableau; j++) {
             for (int i = 0; i < tailleTableau; i++) {
@@ -91,18 +91,22 @@ public class PlateauRenderer extends JFrame {
                 // Mettez à jour la couleur du panneau en fonction de la nouvelle matrice du plateau
                 Color couleur;
                 Color couleurBordu;
-                switch (plateauMatrix[i][j]) {
+                switch (plateauMatrix[i][j][0]) {
                     case Plateau.VIDE:
                         couleur = Color.WHITE;
                         couleurBordu = Color.WHITE;
                         break;
                     case Plateau.AGENT:
-                        couleur = Color.RED;
+                        couleur = getColorFromHashCode(plateauMatrix[i][j][1]);
                         couleurBordu = Color.WHITE;
                         break;
                     case Plateau.DESTINATION:
                         couleur = Color.WHITE;
-                        couleurBordu = Color.GREEN;
+                        couleurBordu = getColorFromHashCode(plateauMatrix[i][j][1]);
+                        break;
+                    case Plateau.AGENT_DESTINATION:
+                        couleur = getColorFromHashCode(plateauMatrix[i][j][1]);
+                        couleurBordu = getColorFromHashCode(plateauMatrix[i][j][1]);
                         break;
                     case Plateau.AGENT_DESTINATION:
                         couleur = Color.RED;
@@ -118,6 +122,18 @@ public class PlateauRenderer extends JFrame {
                 roundColorPanel.repaint(); // Redessinez le panneau avec les nouvelles couleurs
             }
         }
+    }
+
+    public static Color getColorFromHashCode(int hashCode) {
+        // Convertissez le hashcode en une valeur de couleur en utilisant les opérations bit à bit
+        int red = (hashCode & 0xFF0000) >> 16;
+        int green = (hashCode & 0x00FF00) >> 8;
+        int blue = hashCode & 0x0000FF;
+
+        // Créez une nouvelle couleur en utilisant les valeurs de rouge, vert et bleu
+        Color color = new Color(red, green, blue);
+
+        return color;
     }
 }
 
