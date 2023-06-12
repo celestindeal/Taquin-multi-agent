@@ -47,24 +47,20 @@ public class PlateauRenderer extends JFrame {
 
         for (int j = 0; j < tailleTableau; j++) {
             for (int i = 0; i < tailleTableau; i++) {
-                Color couleur;
-                Color couleurBordu;
-                switch (plateauMatrix[i][j][0]) {
-                    case Plateau.VIDE:
-                        couleur = Color.WHITE;
-                        couleurBordu = Color.WHITE;
-                        break;
-                    case Plateau.AGENT:
-                        couleur = getColorFromHashCode(plateauMatrix[i][j][1]);
-                        couleurBordu = Color.WHITE;
-                        break;
-                    case Plateau.DESTINATION:
-                        couleur = Color.WHITE;
-                        couleurBordu = getColorFromHashCode(plateauMatrix[i][j][1]);
-                        break;
-                    default:
-                        couleur = Color.BLACK;
-                        couleurBordu = Color.BLACK;
+
+                Color couleur = Color.BLACK;
+                Color couleurBordu = Color.BLACK;
+
+                if(plateauMatrix[i][j][0] == Plateau.VIDE){
+                    couleur = Color.WHITE;
+                } else if (plateauMatrix[i][j][0] == Plateau.AGENT) {
+                    couleur = getColorFromHashCode(plateauMatrix[i][j][1]);
+                }
+
+                if(plateauMatrix[i][j][2] == Plateau.VIDE){
+                    couleurBordu = Color.WHITE;
+                } else if (plateauMatrix[i][j][2] == Plateau.DESTINATION) {
+                    couleurBordu = getColorFromHashCode(plateauMatrix[i][j][3]);
                 }
 
                 RoundColorPanel roundColorPanel = new RoundColorPanel(couleur, couleurBordu);
@@ -89,28 +85,20 @@ public class PlateauRenderer extends JFrame {
                 RoundColorPanel roundColorPanel = roundColorPanels.get(index);
 
                 // Mettez à jour la couleur du panneau en fonction de la nouvelle matrice du plateau
-                Color couleur;
-                Color couleurBordu;
-                switch (plateauMatrix[i][j][0]) {
-                    case Plateau.VIDE:
-                        couleur = Color.WHITE;
-                        couleurBordu = Color.WHITE;
-                        break;
-                    case Plateau.AGENT:
-                        couleur = getColorFromHashCode(plateauMatrix[i][j][1]);
-                        couleurBordu = Color.WHITE;
-                        break;
-                    case Plateau.DESTINATION:
-                        couleur = Color.WHITE;
-                        couleurBordu = getColorFromHashCode(plateauMatrix[i][j][1]);
-                        break;
-                    case Plateau.AGENT_DESTINATION:
-                        couleur = getColorFromHashCode(plateauMatrix[i][j][1]);
-                        couleurBordu = getColorFromHashCode(plateauMatrix[i][j][1]);
-                        break;
-                    default:
-                        couleur = Color.BLACK;
-                        couleurBordu = Color.BLACK;
+                Color couleur = Color.BLACK;
+                Color couleurBordu = Color.BLACK;
+
+
+                if(plateauMatrix[i][j][0] == Plateau.VIDE){
+                    couleur = Color.WHITE;
+                } else if (plateauMatrix[i][j][0] == Plateau.AGENT) {
+                    couleur = getColorFromHashCode(plateauMatrix[i][j][1]);
+                }
+
+                if(plateauMatrix[i][j][2] == Plateau.VIDE){
+                    couleurBordu = Color.WHITE;
+                } else if (plateauMatrix[i][j][2] == Plateau.DESTINATION) {
+                    couleurBordu = getColorFromHashCode(plateauMatrix[i][j][3]);
                 }
 
                 roundColorPanel.setColor(couleur); // Mettez à jour la couleur du panneau
