@@ -34,4 +34,12 @@ public class RoundColorPanel extends JPanel {
     public Dimension getPreferredSize() {
         return new Dimension(50, 50); // Taille préférée du composant
     }
+
+    public void setColor(Color couleur) {
+        this.color = couleur;
+    }
+
+    public void setBorderColor(Color couleurBordu) {
+        this.bordu = couleurBordu;
+    }
 }

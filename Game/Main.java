@@ -1,3 +1,5 @@
+package Game;
+
 import Plateau.Plateau;
 import Renderer.PlateauRenderer;
 

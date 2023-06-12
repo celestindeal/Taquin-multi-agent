@@ -59,46 +59,59 @@ public class AgentTaquin extends PlateauBaseObject implements Runnable {
 
     @Override
     public void run() {
-        ArrayList<DirectionEnum> directions = TaquinSolver.getDirectionsToDestination(this);
-        boolean hasReachedDestination = false;
+        boolean isAgentOnDestination = false;
         while (true) {
-            while (directions.size() > 0) {
-                if (!this.deplacer(directions.get(0))) {
-                    AgentTaquin blockingAgent = Plateau.getAgentAtPosition(Position.enumToPosition(this.getPosition(), directions.get(0)));
-                    if (blockingAgent != null) {
-                        blockingAgent.letterbox.setOrder(new MoveAgentOrder(this));
+            // Check if the agent needs to move
+            if (this.letterbox.hasOrder()) {
+                DirectionEnum direction = this.getPossibleDirectionFromPosition();
+                if (direction != null) {
+                    this.deplacer(direction);
+                    System.out.println("Agent " + this.name + " has moved to " + direction);
+                    isAgentOnDestination = false;
+                    try {
+                        Thread.sleep(Plateau.AGENT_SLEEP_MOVE_TIME);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
-                }
-                System.out.println("Agent " + this.name + " moved to " + this.getPosition());
-                directions.remove(0);
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    this.deplacer(DirectionEnum.getOpposite(direction));
+                    System.out.println("Agent " + this.name + " has moved to " + DirectionEnum.getOpposite(direction));
+                } else {
+                    System.out.println("Agent " + this.name + " can't move");
                 }
             }
-            if (this.getPosition().equals(this.destination.getPosition()) && !hasReachedDestination) {
-                hasReachedDestination = true;
-                System.out.println("Agent " + this.name + " reached destination");
+
+            // Check if the agent is on the destination
+            if (this.getPosition().equals(this.destination.getPosition()) && !isAgentOnDestination) {
+                isAgentOnDestination = true;
+                System.out.println("Agent " + this.name + " is on destination");
                 if (Plateau.isBoardValid()) {
                     System.out.println("Board is valid");
                     break;
                 }
+
             }
-            if (this.letterbox.hasOrder()) {
-                DirectionEnum possibleDirection = this.getPossibleDirectionFromPosition();
-                if (possibleDirection != null) {
-                    this.deplacer(possibleDirection);
-                    try {
-                        Thread.sleep(2000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+
+            // Move the agent to the destination
+            while (!this.getPosition().equals(this.getDestination().getPosition())) {
+                ArrayList<DirectionEnum> direction = TaquinSolver.getDirectionsToDestination(this);
+                for (DirectionEnum directionEnum : direction) {
+                    if (this.deplacer(directionEnum)) {
+                        System.out.println("Agent " + this.name + " has moved to " + directionEnum);
+                        try {
+                            Thread.sleep(Plateau.AGENT_SLEEP_TIME);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        AgentTaquin agent = Plateau.getAgentAtPosition(Position.enumToPosition(this.getPosition(), directionEnum));
+                        if (agent != null) {
+                            agent.letterbox.setOrder(new MoveAgentOrder(this));
+                        }
+                        break;
                     }
-                    System.out.println("Agent " + this.name + " moved to " + this.getPosition());
-                    hasReachedDestination = false;
-                    directions = TaquinSolver.getDirectionsToDestination(this);
                 }
             }
         }
+        Plateau.listeAgents.remove(this);
     }
 }

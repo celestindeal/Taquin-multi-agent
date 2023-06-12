@@ -12,6 +12,8 @@ public class Plateau {
     final public static int AGENT = 1;
     final public static int DESTINATION = 2;
     final public static int AGENT_DESTINATION = 3;
+    final public static int AGENT_SLEEP_MOVE_TIME = 1000;
+    final public static int AGENT_SLEEP_TIME = 500;
 
     public static int[][] getPlateauMatrix() {
         int[][] matrix = new int[TAILLE][TAILLE];

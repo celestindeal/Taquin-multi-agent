@@ -4,10 +4,12 @@ import Plateau.Plateau;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
+import java.util.ArrayList;
 
 import static Plateau.PlateauEnum.VIDE;
 
 public class PlateauRenderer extends JFrame {
+    private static  ArrayList<RoundColorPanel> roundColorPanels = new ArrayList<>();
     public static void renderPlateauConsole() {
         int[][] plateauMatrix = Plateau.getPlateauMatrix();
         System.out.print("╔");
@@ -34,27 +36,29 @@ public class PlateauRenderer extends JFrame {
         System.out.println("╝");
     }
 
-    public void  swing1() {
+    public void swing1() {
 
         int Taille_Case = 100;
         int tailleTableau = Plateau.TAILLE;
+        int[][] plateauMatrix = Plateau.getPlateauMatrix();
 
         setLayout(new GridLayout(tailleTableau, tailleTableau)); // Utilisation de GridLayout
 
-        for (int i = 0; i < tailleTableau; i++) {
-            for (int j = 0; j < tailleTableau; j++) {
+        for (int j = 0; j < tailleTableau; j++) {
+            for (int i = 0; i < tailleTableau; i++) {
+                // Code existant pour déterminer la couleur du panneau
                 Color couleur;
                 Color couleurBordu;
-                switch (Plateau.plateau[i][j].getType()) {
-                    case VIDE:
+                switch (plateauMatrix[i][j]) {
+                    case Plateau.VIDE:
                         couleur = Color.WHITE;
                         couleurBordu = Color.WHITE;
                         break;
-                    case AGENT:
+                    case Plateau.AGENT:
                         couleur = Color.RED;
                         couleurBordu = Color.WHITE;
                         break;
-                    case DESTINATION:
+                    case Plateau.DESTINATION:
                         couleur = Color.WHITE;
                         couleurBordu = Color.GREEN;
                         break;
@@ -63,15 +67,53 @@ public class PlateauRenderer extends JFrame {
                         couleurBordu = Color.BLACK;
                 }
 
-                RoundColorPanel roundColorPanel = new RoundColorPanel(couleur, couleurBordu); // Création du panel rond de couleur
-                //roundColorPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE)); // Ajout d'une bordure de la même couleur
-                add(roundColorPanel); // Ajout du panel au conteneur
+                RoundColorPanel roundColorPanel = new RoundColorPanel(couleur, couleurBordu);
+                roundColorPanels.add(roundColorPanel); // Ajoutez le panneau à la liste
+
+                add(roundColorPanel); // Ajout du panneau au conteneur
             }
         }
 
-
         setSize(Taille_Case * tailleTableau, Taille_Case * tailleTableau);
         setVisible(true);
+
+    }
+
+    private void updatePanelColors() {
+        int tailleTableau = Plateau.TAILLE;
+        int[][] plateauMatrix = Plateau.getPlateauMatrix();
+
+        for (int j = 0; j < tailleTableau; j++) {
+            for (int i = 0; i < tailleTableau; i++) {
+                int index = i + j * tailleTableau;
+                RoundColorPanel roundColorPanel = roundColorPanels.get(index);
+
+                // Mettez à jour la couleur du panneau en fonction de la nouvelle matrice du plateau
+                Color couleur;
+                Color couleurBordu;
+                switch (plateauMatrix[i][j]) {
+                    case Plateau.VIDE:
+                        couleur = Color.WHITE;
+                        couleurBordu = Color.WHITE;
+                        break;
+                    case Plateau.AGENT:
+                        couleur = Color.RED;
+                        couleurBordu = Color.WHITE;
+                        break;
+                    case Plateau.DESTINATION:
+                        couleur = Color.WHITE;
+                        couleurBordu = Color.GREEN;
+                        break;
+                    default:
+                        couleur = Color.BLACK;
+                        couleurBordu = Color.BLACK;
+                }
+
+                roundColorPanel.setColor(couleur); // Mettez à jour la couleur du panneau
+                roundColorPanel.setBorderColor(couleurBordu); // Mettez à jour la couleur de la bordure
+                roundColorPanel.repaint(); // Redessinez le panneau avec les nouvelles couleurs
+            }
+        }
     }
 }
 
