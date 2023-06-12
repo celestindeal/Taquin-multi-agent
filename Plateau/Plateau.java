@@ -16,22 +16,18 @@ public class Plateau {
     final public static int AGENT_SLEEP_TIME = 500;
 
     public static int[][][] getPlateauMatrix() {
-        int[][][] matrix = new int[TAILLE][TAILLE][2];
+        int[][][] matrix = new int[TAILLE][TAILLE][4];
         for (int i = 0; i < TAILLE; i++) {
             for (int j = 0; j < TAILLE; j++) {
                 matrix[i][j][0] = VIDE;
+                matrix[i][j][2] = VIDE;
             }
         }
         for (AgentTaquin agent : listeAgents) {
-            if (agent.getPosition().equals(agent.getDestination().getPosition())) {
-                matrix[agent.getPosition().getX()][agent.getPosition().getY()][0] = AGENT_DESTINATION;
-                matrix[agent.getPosition().getX()][agent.getPosition().getY()][1] = Integer.parseInt(agent.setName());
-                continue;
-            }
             matrix[agent.getPosition().getX()][agent.getPosition().getY()][0] = AGENT;
             matrix[agent.getPosition().getX()][agent.getPosition().getY()][1] = Integer.parseInt(agent.setName());
-            matrix[agent.getDestination().getPosition().getX()][agent.getDestination().getPosition().getY()][0] = DESTINATION;
-            matrix[agent.getDestination().getPosition().getX()][agent.getDestination().getPosition().getY()][1] = Integer.parseInt(agent.setName());
+            matrix[agent.getDestination().getPosition().getX()][agent.getDestination().getPosition().getY()][2] = DESTINATION;
+            matrix[agent.getDestination().getPosition().getX()][agent.getDestination().getPosition().getY()][3] = Integer.parseInt(agent.setName());
         }
         return matrix;
     }

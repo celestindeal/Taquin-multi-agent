@@ -8,8 +8,8 @@ public class Main {
     public static void main(String[] args) {
         TaquinGame game = new TaquinGame();
 
-        Plateau.TAILLE =10;
-        Plateau.NB_AGENTS= 5;
+        Plateau.TAILLE =5;
+        Plateau.NB_AGENTS= 3;
 
         game.generatePlateau();
         PlateauRenderer.renderPlateauConsole();
