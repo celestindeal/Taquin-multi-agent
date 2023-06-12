@@ -12,4 +12,8 @@ public class Letterbox {
     public boolean hasOrder() {
         return this.order != null;
     }
+
+    public MoveAgentOrder getOrder() {
+        return this.order;
+    }
 }
