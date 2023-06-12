@@ -9,23 +9,29 @@ import static Plateau.PlateauEnum.VIDE;
 
 public class PlateauRenderer extends JFrame {
     public static void renderPlateauConsole() {
+        int[][] plateauMatrix = Plateau.getPlateauMatrix();
+        System.out.print("╔");
         for (int i = 0; i < Plateau.TAILLE; i++) {
-            for (int j = 0; j < Plateau.TAILLE; j++) {
-                switch (Plateau.plateau[i][j].getType()) {
-                    case VIDE:
-                        System.out.print("_");
-                        break;
-                    case AGENT:
-                        System.out.print("A");
-                        break;
-                    case DESTINATION:
-                        System.out.print("D");
-                        break;
-                }
-                System.out.print(" ");
-            }
-            System.out.println();
+            System.out.print("═══");
         }
+        System.out.println("╗");
+        for (int i = 0; i < Plateau.TAILLE; i++) {
+            System.out.print("║");
+            for (int j = 0; j < Plateau.TAILLE; j++) {
+                switch (plateauMatrix[j][i]) {
+                    case Plateau.VIDE -> System.out.print(" - ");
+                    case Plateau.AGENT -> System.out.print(" A ");
+                    case Plateau.DESTINATION -> System.out.print(" D ");
+                    case Plateau.AGENT_DESTINATION -> System.out.print(" X ");
+                }
+            }
+            System.out.println("║");
+        }
+        System.out.print("╚");
+        for (int i = 0; i < Plateau.TAILLE; i++) {
+            System.out.print("═══");
+        }
+        System.out.println("╝");
     }
 
     public void  swing1() {
