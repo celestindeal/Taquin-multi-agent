@@ -79,7 +79,7 @@ public class PlateauRenderer extends JFrame {
 
     }
 
-    private void updatePanelColors() {
+    public void updatePanelColors() {
         int tailleTableau = Plateau.TAILLE;
         int[][] plateauMatrix = Plateau.getPlateauMatrix();
 
@@ -102,6 +102,10 @@ public class PlateauRenderer extends JFrame {
                         break;
                     case Plateau.DESTINATION:
                         couleur = Color.WHITE;
+                        couleurBordu = Color.GREEN;
+                        break;
+                    case Plateau.AGENT_DESTINATION:
+                        couleur = Color.RED;
                         couleurBordu = Color.GREEN;
                         break;
                     default:

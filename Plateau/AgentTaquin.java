@@ -2,6 +2,7 @@ package Plateau;
 
 import Communication.Letterbox;
 import Communication.MoveAgentOrder;
+import Game.Main;
 import Renderer.PlateauRenderer;
 import Solver.TaquinSolver;
 
@@ -31,6 +32,7 @@ public class AgentTaquin extends PlateauBaseObject implements Runnable {
         } catch (IllegalArgumentException e) {
             return false;
         }
+        Main.plateauRenderer.updatePanelColors();
         return true;
     }
 
