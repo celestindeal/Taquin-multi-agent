@@ -2,6 +2,7 @@ package Plateau;
 
 import Communication.Letterbox;
 import Communication.MoveAgentOrder;
+import Game.Main;
 import Renderer.PlateauRenderer;
 import Solver.TaquinSolver;
 
@@ -24,6 +25,10 @@ public class AgentTaquin extends PlateauBaseObject implements Runnable {
         this.name = hashCode() + "";
     }
 
+    public String setName(){
+        return name;
+    }
+
     public boolean deplacer(DirectionEnum directionEnum) {
         Position newPosition = Position.enumToPosition(this.getPosition(), directionEnum);
         try {
@@ -31,6 +36,7 @@ public class AgentTaquin extends PlateauBaseObject implements Runnable {
         } catch (IllegalArgumentException e) {
             return false;
         }
+        Main.plateauRenderer.updatePanelColors();
         return true;
     }
 
@@ -39,19 +45,19 @@ public class AgentTaquin extends PlateauBaseObject implements Runnable {
     }
 
     private DirectionEnum getPossibleDirectionFromPosition() {
-        int[][] matrix = Plateau.getPlateauMatrix();
+        int[][][] matrix = Plateau.getPlateauMatrix();
         int x = this.getPosition().getX();
         int y = this.getPosition().getY();
-        if (x > 0 && matrix[x - 1][y] == Plateau.VIDE) {
+        if (x > 0 && matrix[x - 1][y][0] == Plateau.VIDE) {
             return DirectionEnum.HAUT;
         }
-        if (x < Plateau.TAILLE - 1 && matrix[x + 1][y] == Plateau.VIDE) {
+        if (x < Plateau.TAILLE - 1 && matrix[x + 1][y][0] == Plateau.VIDE) {
             return DirectionEnum.BAS;
         }
-        if (y > 0 && matrix[x][y - 1] == Plateau.VIDE) {
+        if (y > 0 && matrix[x][y - 1][0] == Plateau.VIDE) {
             return DirectionEnum.GAUCHE;
         }
-        if (y < Plateau.TAILLE - 1 && matrix[x][y + 1] == Plateau.VIDE) {
+        if (y < Plateau.TAILLE - 1 && matrix[x][y + 1][0] == Plateau.VIDE) {
             return DirectionEnum.DROITE;
         }
         return null;
