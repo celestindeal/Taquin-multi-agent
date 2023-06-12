@@ -108,10 +108,6 @@ public class PlateauRenderer extends JFrame {
                         couleur = getColorFromHashCode(plateauMatrix[i][j][1]);
                         couleurBordu = getColorFromHashCode(plateauMatrix[i][j][1]);
                         break;
-                    case Plateau.AGENT_DESTINATION:
-                        couleur = Color.RED;
-                        couleurBordu = Color.GREEN;
-                        break;
                     default:
                         couleur = Color.BLACK;
                         couleurBordu = Color.BLACK;

@@ -9,7 +9,7 @@ public class Main {
         TaquinGame game = new TaquinGame();
 
         Plateau.TAILLE =10;
-        Plateau.NB_AGENTS= 5;
+        Plateau.NB_AGENTS= 8;
 
         game.generatePlateau();
         PlateauRenderer.renderPlateauConsole();
